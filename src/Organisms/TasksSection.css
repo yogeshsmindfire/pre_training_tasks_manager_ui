@@ -1,0 +1,84 @@
+.fui-DialogContent {
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+
+  .fui-Input {
+    width: max-content;
+  }
+}
+
+.task-section {
+  padding-left: 30px;
+}
+
+.no-tasks-container {
+  height: 70vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tasks-list-container {
+  transition: all 1s;
+  width: 50vw;
+
+  .fui-MessageBar {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+  }
+
+  .fui-MessageBar__icon {
+    display: none;
+  }
+
+  .fui-MessageBarBody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fui-Badge {
+    width: max-content;
+  }
+
+  .fui-MessageBarActions__containerAction {
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+  }
+}
+
+.tasks-list-container > div {
+  margin: 10px auto;
+}
+
+@media screen and (max-width: 650px) {
+  .tasks-list-container {
+    width: 100vw;
+  }
+}
+
+#create-task-btn {
+  position: absolute !important;
+  bottom: 10% !important;
+  right: 10% !important;
+  border-radius: 8px !important;
+  width: 10px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 40px !important;
+  box-shadow: 1px 1px 4px 0px #000000 !important;
+  border: none !important;
+}
+
+.fui-SkeletonItem {
+  width: 50vw !important;
+  margin: 20px !important;
+  height: 50px !important;
+}

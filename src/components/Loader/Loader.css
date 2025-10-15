@@ -1,0 +1,25 @@
+.loader-container {
+  width: 100%;
+  height: calc(100vh - 65px);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  flex-direction: column;
+  gap: 20px;
+
+  .fui-ProgressBar {
+    width: 50%;
+  }
+}
+
+.loader-container.dark {
+  background-color: black;
+}
+
+.loader-container.light {
+  background-color: white;
+}
