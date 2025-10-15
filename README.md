@@ -73,3 +73,75 @@ export default defineConfig([
   },
 ])
 ```
+
+## Project structure
+
+Top-level files and folders included in this template:
+
+- `index.html` — Vite entry HTML file
+- `package.json` — npm scripts and dependencies
+- `vite.config.ts` — Vite configuration
+- `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json` — TypeScript configuration
+- `src/` — application source files
+  - `App.tsx`, `main.tsx`, `App.css` — app entry and styles
+  - `components/` — small, reusable components (Header, Loader, Notification, TaskEditDialogue)
+  - `global/` — global store and RTK slices (store.tsx, features/*)
+  - `hoc/` — higher-order components (ErrorBoundary)
+  - `Organisms/` — larger composed UI pieces (TasksSection)
+  - `services/` — API services (authService.ts, taskService.ts)
+  - `Views/` — page views (Home, Login, Register)
+- `public/` — static assets
+
+> Note: The workspace used for the pre-training task includes additional CSS and TSX files under `src/` as listed above.
+
+## Setup & Run (Windows PowerShell)
+
+The project uses npm/Yarn/pnpm-compatible scripts defined in `package.json`. Below are example commands for Windows PowerShell. Run them from the project root (where `package.json` is).
+
+1. Install dependencies
+
+```powershell
+# npm
+npm install
+
+# or with yarn
+yarn
+
+# or with pnpm
+pnpm install
+```
+
+2. Start dev server (Vite)
+
+```powershell
+npm run dev
+```
+
+3. Build for production
+
+```powershell
+npm run build
+```
+
+4. Lint the project
+
+```powershell
+npm run lint
+```
+
+5. Preview production build locally
+
+```powershell
+npm run preview
+```
+
+Troubleshooting tips
+
+- If TypeScript build fails during `npm run build`, make sure TypeScript version matches the `tsconfig` requirements and run `npx tsc -v` to check the installed tsc.
+- If ports are occupied when running `npm run dev`, set the `PORT` environment variable or close the conflicting process. Example for PowerShell:
+
+```powershell
+$env:PORT = 3001; npm run dev
+```
+
+If you'd like, I can also add a short CONTRIBUTING or DEVELOPMENT guide, or update `package.json` scripts to include a cross-platform helper like `cross-env`.
