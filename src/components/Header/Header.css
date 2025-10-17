@@ -25,3 +25,15 @@
   background: #141414;
   color: white;
 }
+
+@media (max-width: 768px) {
+  .fui-Switch {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  p {
+    text-align: center;
+  }
+}

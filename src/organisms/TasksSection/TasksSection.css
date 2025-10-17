@@ -58,12 +58,6 @@
   margin: 10px auto;
 }
 
-@media screen and (max-width: 650px) {
-  .tasks-list-container {
-    width: 100vw;
-  }
-}
-
 #create-task-btn {
   position: absolute !important;
   bottom: 10% !important;
@@ -81,4 +75,20 @@
   width: 50vw !important;
   margin: 20px !important;
   height: 50px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .tasks-list-container {
+    width: 100vw;
+  }
+
+  .fui-Skeleton {
+    width: 100vw !important;
+
+    .fui-SkeletonItem {
+      width: 90vw !important;
+      margin: 20px !important;
+      height: 50px !important;
+    }
+  }
 }
