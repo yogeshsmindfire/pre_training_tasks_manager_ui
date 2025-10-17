@@ -11,20 +11,23 @@ import {
   Label,
   Textarea,
   Spinner,
-} from "@fluentui/react-components";
-import { useState } from "react";
-import { fetchTasks, updateTask } from "../../services/taskService";
-import { loadTasksStart, updateTasks } from "../../global/features/tasksSlice";
-import { useDispatch } from "react-redux";
+} from '@fluentui/react-components';
+import { useState } from 'react';
+import { fetchTasks, updateTask } from '../../services/taskService';
+import {
+  loadTaskFailed,
+  loadTasksStart,
+  updateTasks,
+} from '../../global/features/tasksSlice';
+import { useDispatch } from 'react-redux';
+import type { TaskEditDialogueProps } from './TaskEditDialogue.types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TaskEditDialogue = ({
   showEditTaskDialog,
   setShowEditTaskDialog,
   taskDetails,
-}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-any) => {
-  const [taskData, setTaskData] = useState(taskDetails || {});
+  setTaskDetails,
+}: TaskEditDialogueProps) => {
   const [isUpdateFailed, setIsUpdateFailed] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const dispatch = useDispatch();
@@ -34,8 +37,8 @@ any) => {
     let taskCompleted = false;
     const currentDate = new Date().getDate();
     const currentMonth = new Date().getMonth() + 1;
-    const taskDueDate = new Date(taskData.dueDate).getDate();
-    const taskDueMonth = new Date(taskData.dueDate).getMonth() + 1;
+    const taskDueDate = new Date(taskDetails.dueDate).getDate();
+    const taskDueMonth = new Date(taskDetails.dueDate).getMonth() + 1;
     if (currentMonth > taskDueMonth) {
       taskCompleted = true;
     } else if (currentMonth === taskDueMonth) {
@@ -48,10 +51,10 @@ any) => {
       taskCompleted = false;
     }
     const { status } = await updateTask(
-      taskData?._id || "",
-      taskData.title,
-      taskData.description,
-      taskData.dueDate,
+      taskDetails._id,
+      taskDetails.title,
+      taskDetails.description,
+      taskDetails.dueDate.replace(/-/g, '.'),
       taskCompleted
     );
     if (status === 200) {
@@ -65,6 +68,8 @@ any) => {
     const tasksResponse = await fetchTasks();
     if (tasksResponse.status === 200) {
       dispatch(updateTasks(tasksResponse.data.tasks));
+    } else {
+      dispatch(loadTaskFailed());
     }
   };
 
@@ -77,31 +82,31 @@ any) => {
             <Label htmlFor="task-title">Title</Label>
             <Input
               id="task-title"
-              value={taskData.title}
+              value={taskDetails.title}
               onChange={(e) =>
-                setTaskData({ ...taskData, title: e.target.value })
+                setTaskDetails({ ...taskDetails, title: e.target.value })
               }
             />
-            <span style={{ marginTop: "20px" }} />
+            <span style={{ marginTop: '20px' }} />
             <Label htmlFor="task-description">Description</Label>
             <Textarea
               id="task-description"
-              value={taskData.description}
+              value={taskDetails.description}
               onChange={(e) =>
-                setTaskData({
-                  ...taskData,
+                setTaskDetails({
+                  ...taskDetails,
                   description: e.target.value,
                 })
               }
             />
-            <span style={{ marginTop: "20px" }} />
+            <span style={{ marginTop: '20px' }} />
             <Label htmlFor="task-title">Title</Label>
             <Input
               id="task-title"
               type="date"
-              value={taskData.dueDate}
+              value={taskDetails.dueDate}
               onChange={(e) =>
-                setTaskData({ ...taskData, dueDate: e.target.value })
+                setTaskDetails({ ...taskDetails, dueDate: e.target.value })
               }
             />
           </DialogContent>
@@ -122,7 +127,7 @@ any) => {
             {isSaving && <Spinner size="small" label="Saving..." />}
           </DialogActions>
           {isUpdateFailed && (
-            <span style={{ color: "red" }}>Failed to update task</span>
+            <span style={{ color: 'red' }}>Failed to update task</span>
           )}
         </DialogBody>
       </DialogSurface>

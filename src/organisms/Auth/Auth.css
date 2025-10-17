@@ -12,7 +12,8 @@
   transition: all 1s ease-in-out;
 }
 
-.register-content, .register-content>form {
+.register-content {
+/* .register-content>form */
   background: black;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   display: flex;

@@ -1,4 +1,4 @@
-import "./Header.css";
+import './Header.css';
 
 import {
   Persona,
@@ -7,18 +7,18 @@ import {
   Switch,
   Button,
   Popover,
-} from "@fluentui/react-components";
+} from '@fluentui/react-components';
 
-import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../../global/features/themeSlice";
-import { logout } from "../../global/features/userSlice";
-import { updateTasks } from "../../global/features/tasksSlice";
-import { logoutUser } from "../../services/authService";
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTheme } from '../../global/features/themeSlice';
+import { logout } from '../../global/features/userSlice';
+import { updateTasks } from '../../global/features/tasksSlice';
+import { logoutUser } from '../../services/authService';
+import type { RootState } from '../../global/store.types';
 
 const Header = () => {
   const dispatch = useDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { theme, user } = useSelector((state: any) => state);
+  const { theme, user } = useSelector((state: RootState) => state);
   const handleLogout = () => {
     logoutUser().then(() => {
       dispatch(logout());
@@ -27,12 +27,12 @@ const Header = () => {
   };
   return (
     <div
-      className={`header-container ${theme.isLightTheme ? "light" : "dark"}`}
+      className={`header-container ${theme.isLightTheme ? 'light' : 'dark'}`}
     >
       <Switch
         onClick={() => dispatch(toggleTheme())}
         checked={theme.isLightTheme ? false : true}
-        label={"Dark Theme"}
+        label={'Dark Theme'}
       ></Switch>
       <p>Tasks Manager</p>
       {user.user && !user.isFetching && (

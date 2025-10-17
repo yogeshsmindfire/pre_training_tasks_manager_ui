@@ -1,59 +1,53 @@
-import Header from "../components/Header/Header";
-import { useEffect, useState } from "react";
+import Header from '../components/Header/Header';
+import { useEffect, useState } from 'react';
+
+import './Home.css';
 
 import {
   FluentProvider,
   webLightTheme,
   webDarkTheme,
   Divider,
-} from "@fluentui/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import TasksSection from "../Organisms/TasksSection";
-import Login from "./Login/Login";
-import Register from "./Register/Register";
-import Notification from "../components/Notification/Notification";
-import { auth, logoutUser } from "../services/authService";
-import { fetchTasks } from "../services/taskService";
-import { loadTasksStart, updateTasks } from "../global/features/tasksSlice";
-import { login, logout } from "../global/features/userSlice";
-import Loader from "../components/Loader/Loader";
-import ErrorBoundary from "../hoc/ErrorBoundary";
+  Spinner,
+} from '@fluentui/react-components';
+import { useDispatch, useSelector } from 'react-redux';
+import TasksSection from '../organisms/TasksSection/TasksSection';
+import Notification from '../components/Notification/Notification';
+import { auth, logoutUser } from '../services/authService';
+import { fetchTasks } from '../services/taskService';
+import {
+  loadTaskFailed,
+  loadTasksStart,
+  updateTasks,
+} from '../global/features/tasksSlice';
+import { login, logout } from '../global/features/userSlice';
+import ErrorBoundary from '../hoc/ErrorBoundary';
+import Auth from '../organisms/Auth/Auth';
+import type { RootState } from '../global/store.types';
 
 const Home = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { theme, user, tasks } = useSelector((state: any) => state);
+  const { theme, user } = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
-  const [loaderValue, setLoaderValue] = useState(0.25);
-
-  const handleLogin = () => {
-    setShowLogin(true);
-  };
-
-  const handleRegister = () => {
-    setShowLogin(false);
-  };
 
   const retrieveTasks = async () => {
+    dispatch(loadTasksStart());
     const { status, data } = await fetchTasks();
     if (status === 200) {
-      dispatch(loadTasksStart());
       dispatch(updateTasks(data.tasks));
+    } else {
+      dispatch(loadTaskFailed());
     }
   };
 
   const onLoadAuthCheck = async () => {
     try {
-      setLoaderValue(0.4);
       const { status, data } = await auth();
       if (status === 200) {
-        setLoaderValue(0.7);
         dispatch(login(data.user));
         dispatch(loadTasksStart());
-        retrieveTasks().then(() => {
-          setLoaderValue(0.9);
-        });
+        retrieveTasks();
       } else {
         logoutUser().then(() => {
           dispatch(logout());
@@ -83,24 +77,19 @@ const Home = () => {
   return (
     <FluentProvider theme={theme.isLightTheme ? webLightTheme : webDarkTheme}>
       <ErrorBoundary>
-        <div style={{ height: "100vh" }}>
+        <div style={{ height: '100vh' }} className="home-container">
           <Header />
           <Divider />
           {!user.isInitialFetchDone ? (
-            <Loader value={loaderValue} />
+            <Spinner size="small" label="Loading..." />
           ) : (
             <>
               <TasksSection />
-              {showLogin && !user.isLoggedIn && (
-                <Login
-                  handleRegister={handleRegister}
+              {!user.isLoggedIn && (
+                <Auth
+                  toggleLogin={() => setShowLogin(!showLogin)}
                   fetchTasks={retrieveTasks}
-                />
-              )}
-              {!showLogin && !user.isLoggedIn && (
-                <Register
-                  handleLogin={handleLogin}
-                  fetchTasks={retrieveTasks}
+                  showLogin={showLogin}
                 />
               )}
               {user.isLoggedIn && (
@@ -108,12 +97,12 @@ const Home = () => {
                   showNotification={showNotification}
                   handleClose={() => setShowNotification(false)}
                   title={
-                    !showLogin ? "Registeration Successful" : "Login Successful"
+                    !showLogin ? 'Registeration Successful' : 'Login Successful'
                   }
                   body={
                     !showLogin
-                      ? "You have successfully registered."
-                      : "You have successfully logged in."
+                      ? 'You have successfully registered.'
+                      : 'You have successfully logged in.'
                   }
                 />
               )}

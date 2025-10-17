@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
-import "./TasksSection.css";
-import TaskEditDialogue from "../components/TaskEditDialogue/TaskEditDialogue";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from 'react';
+import './TasksSection.css';
+import TaskEditDialogue from '../../components/TaskEditDialogue/TaskEditDialogue';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MessageBar,
   MessageBarBody,
@@ -13,32 +13,58 @@ import {
   Badge,
   Skeleton,
   SkeletonItem,
-} from "@fluentui/react-components";
+} from '@fluentui/react-components';
 import {
   TextEditStyleRegular,
   CheckmarkUnderlineCircleRegular,
   DismissRegular,
-} from "@fluentui/react-icons";
-import { deleteTask, fetchTasks, updateTask } from "../services/taskService";
+} from '@fluentui/react-icons';
+import { deleteTask, fetchTasks, updateTask } from '../../services/taskService';
 import {
-  loadTasksEnd,
+  loadTaskFailed,
   loadTasksStart,
   updateTasks,
-} from "../global/features/tasksSlice";
+} from '../../global/features/tasksSlice';
+import type { RootState, TaskFields } from '../../global/store.types';
 
 const TasksSection = () => {
   const dispatch = useDispatch();
-  const { tasks, isFetching } = useSelector((state: any) => state.tasks);
-  const { user } = useSelector((state: any) => state);
+  const { tasks, isFetching, hasFetchingFailed } = useSelector(
+    (state: RootState) => state.tasks
+  );
+  const { user } = useSelector((state: RootState) => state);
   const [showEditTaskDialog, setShowEditTaskDialog] = useState(false);
-  const [taskDetails, setTaskDetails] = useState(null);
+  const [taskDetails, setTaskDetails] = useState<TaskFields>({
+    _id: '',
+    title: '',
+    description: '',
+    dueDate: '',
+    completed: false,
+  });
 
-  const editTask = (task: any) => {
+  const editTask = (task?: TaskFields) => {
     setShowEditTaskDialog(true);
-    setTaskDetails(task || null);
+    let date = new Date();
+    if (task?.dueDate) {
+      const dateParts = task?.dueDate.split('.');
+      date = new Date(
+        parseInt(dateParts[2]),
+        parseInt(dateParts[1]) - 1,
+        parseInt(dateParts[0]) + 1
+      );
+    }
+    const taskData = {
+      _id: task?._id || '',
+      title: task?.title || '',
+      description: task?.description || '',
+      dueDate: date.toISOString().split('T')[0] || '',
+      completed: task?.completed || false,
+    };
+    setTaskDetails(taskData);
   };
 
-  const handleCompleteTask = async (task: any) => {
+  const handleCompleteTask = async (task: TaskFields) => {
+    dispatch(loadTasksStart());
     await updateTask(
       task._id,
       task.title,
@@ -51,7 +77,7 @@ const TasksSection = () => {
     if (status === 200) {
       dispatch(updateTasks(data.tasks));
     } else {
-      dispatch(loadTasksEnd());
+      dispatch(loadTaskFailed());
     }
   };
 
@@ -62,7 +88,7 @@ const TasksSection = () => {
     if (status === 200) {
       dispatch(updateTasks(data.tasks));
     } else {
-      dispatch(loadTasksEnd());
+      dispatch(loadTaskFailed());
     }
   };
 
@@ -74,7 +100,12 @@ const TasksSection = () => {
             const taksDueRemainingDays =
               (new Date(task.dueDate).getTime() - new Date().getTime()) /
               (1000 * 60 * 60 * 24);
-            const taskDueDate = new Date(task.dueDate);
+            const dueDateParts = task.dueDate.split('.');
+            const taskDueDate = new Date(
+              dueDateParts[2],
+              dueDateParts[1],
+              dueDateParts[0]
+            );
             return (
               <MessageBar key={task._id}>
                 <MessageBarBody>
@@ -82,12 +113,12 @@ const TasksSection = () => {
                   {task.description}
                   {task.completed !== true ? (
                     <Badge
-                      color={taksDueRemainingDays < 0 ? "danger" : "warning"}
+                      color={taksDueRemainingDays < 0 ? 'danger' : 'warning'}
                     >{`Due on ${
                       taskDueDate.getDate() +
-                      "-" +
+                      '-' +
                       taskDueDate.getMonth() +
-                      "-" +
+                      '-' +
                       taskDueDate.getFullYear()
                     }`}</Badge>
                   ) : (
@@ -135,13 +166,12 @@ const TasksSection = () => {
             );
           })}
 
-          {taskDetails && (
-            <TaskEditDialogue
-              showEditTaskDialog={showEditTaskDialog}
-              setShowEditTaskDialog={setShowEditTaskDialog}
-              taskDetails={taskDetails}
-            />
-          )}
+          <TaskEditDialogue
+            showEditTaskDialog={showEditTaskDialog}
+            setShowEditTaskDialog={setShowEditTaskDialog}
+            taskDetails={taskDetails}
+            setTaskDetails={setTaskDetails}
+          />
         </div>
       )}
       {isFetching && (
@@ -151,13 +181,17 @@ const TasksSection = () => {
           <SkeletonItem />
         </Skeleton>
       )}
-      {!isFetching && tasks && !tasks.length && (
+      {(hasFetchingFailed || (!isFetching && tasks && !tasks.length)) && (
         <div className="no-tasks-container">
-          <span>No tasks available. Create a new task to get started!</span>
+          <span>
+            {hasFetchingFailed
+              ? 'Failed to load tasks. Please try again in sometime.'
+              : 'No tasks available. Create a new task to get started!'}
+          </span>
         </div>
       )}
       {user.isLoggedIn && (
-        <Button onClick={editTask} id="create-task-btn">
+        <Button onClick={() => editTask()} id="create-task-btn">
           +
         </Button>
       )}

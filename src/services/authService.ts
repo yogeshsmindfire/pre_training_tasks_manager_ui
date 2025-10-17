@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const registerUser = async (
   name: string,
@@ -6,14 +6,18 @@ export const registerUser = async (
   password: string,
   remember: boolean
 ) => {
-  const response = await axios.post("http://localhost:8000/api/auth/register", {
-    name,
-    email,
-    password,
-    remember,
-  });
+  const response = await axios.post(
+    'http://localhost:8000/api/auth/register',
+    {
+      name,
+      email,
+      password,
+      remember,
+    },
+    { withCredentials: true }
+  );
   if (response.status !== 200) {
-    throw new Error("Failed to register user");
+    throw new Error('Failed to register user');
   }
   return { status: response.status, data: response.data };
 };
@@ -24,7 +28,7 @@ export const loginUser = async (
   remember: boolean
 ) => {
   const response = await axios.post(
-    "http://localhost:8000/api/auth/login",
+    'http://localhost:8000/api/auth/login',
     {
       email,
       password,
@@ -33,13 +37,13 @@ export const loginUser = async (
     { withCredentials: true }
   );
   if (response.status !== 200) {
-    throw new Error("Failed to login user");
+    throw new Error('Failed to login user');
   }
   return { status: response.status, data: response.data };
 };
 
 export const verifyUser = async (email: string) => {
-  const response = await axios.post("http://localhost:8000/api/auth/verify", {
+  const response = await axios.post('http://localhost:8000/api/auth/verify', {
     email,
   });
   return { status: response.status };
@@ -47,22 +51,22 @@ export const verifyUser = async (email: string) => {
 
 export const logoutUser = async () => {
   const response = await axios.post(
-    "http://localhost:8000/api/auth/logout",
+    'http://localhost:8000/api/auth/logout',
     {},
     { withCredentials: true }
   );
   if (response.status !== 200) {
-    throw new Error("Failed to logout user");
+    throw new Error('Failed to logout user');
   }
   return { status: response.status, data: response.data };
 };
 
 export const auth = async () => {
-  const response = await axios.get("http://localhost:8000/api/auth/login", {
+  const response = await axios.get('http://localhost:8000/api/auth/login', {
     withCredentials: true,
   });
   if (response.status !== 200) {
-    throw new Error("Failed to ping server");
+    throw new Error('Failed to ping server');
   }
   return { status: response.status, data: response.data };
 };

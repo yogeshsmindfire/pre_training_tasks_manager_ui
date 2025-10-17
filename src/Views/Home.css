@@ -1,0 +1,5 @@
+.home-container > .fui-Spinner {
+  height: calc(90vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
