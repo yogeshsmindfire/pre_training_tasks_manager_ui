@@ -1,4 +1,4 @@
-export const API_BASE_DOMAIN = 'http://localhost:8000/';
+export const API_BASE_DOMAIN = 'http://localhost:8000';
 export const REGISTER_USER = '/api/auth/register';
 export const LOGIN_USER = '/api/auth/login';
 export const VERIFY_USER = '/api/auth/verify';
