@@ -1,147 +1,126 @@
-# React + TypeScript + Vite
+# Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple task manager application that allows users to create, edit, delete, and update tasks. Users can also log in and register to manage their tasks.
 
-Currently, two official plugins are available:
+## Folder Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+d:\Pre-training\Tasks\pre_training_tasks_manager_ui\
+├───.eslintrc.cjs
+├───.gitignore
+├───.prettierrc
+├───eslint.config.js
+├───index.html
+├───package-lock.json
+├───package.json
+├───tsconfig.app.json
+├───tsconfig.json
+├───tsconfig.node.json
+├───vite.config.ts
+├───.git\...
+├───.husky\
+│   ├───pre-commit
+│   └───_\
+├───.vite\
+│   └───deps\
+│       ├───_metadata.json
+│       └───package.json
+├───node_modules\...
+├───public\
+│   └───vite.svg
+└───src\
+    ├───App.css
+    ├───App.tsx
+    ├───main.tsx
+    ├───components\
+    │   ├───Form\
+    │   │   ├───Form.css
+    │   │   ├───Form.tsx
+    │   │   └───Form.types.ts
+    │   ├───Header\
+    │   │   ├───Header.css
+    │   │   └───Header.tsx
+    │   ├───Loader\
+    │   │   ├───Loader.css
+    │   │   └───Loader.tsx
+    │   ├───Notification\
+    │   │   ├───Notification.css
+    │   │   └───Notification.tsx
+    │   └───TaskEditDialogue\
+    │       ├───TaskEditDialogue.tsx
+    │       └───TaskEditDialogue.types.ts
+    ├───constants\
+    │   ├───labels.ts
+    │   └───service.ts
+    ├───global\
+    │   ├───constants.ts
+    │   ├───store.tsx
+    │   ├───store.types.ts
+    │   └───features\
+    │       ├───tasksSlice.tsx
+    │       ├───themeSlice.tsx
+    │       └───userSlice.tsx
+    ├───hoc\
+    │   └───ErrorBoundary.tsx
+    ├───organisms\
+    │   ├───Auth\
+    │   │   ├───Auth.config.ts
+    │   │   ├───Auth.css
+    │   │   └───Auth.tsx
+    │   └───TasksSection\
+    │       ├───TasksSection.css
+    │       └───TasksSection.tsx
+    ├───services\
+    │   ├───authService.ts
+    │   └───taskService.ts
+    └───views\
+        ├───Home.css
+        └───Home.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Node.js and npm (or yarn/pnpm) should be installed on your machine.
 
-## Project structure
+### Installation
 
-Top-level files and folders included in this template:
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd pre_training_tasks_manager_ui
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-- `index.html` — Vite entry HTML file
-- `package.json` — npm scripts and dependencies
-- `vite.config.ts` — Vite configuration
-- `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json` — TypeScript configuration
-- `src/` — application source files
-  - `App.tsx`, `main.tsx`, `App.css` — app entry and styles
-  - `components/` — small, reusable components (Header, Loader, Notification, TaskEditDialogue)
-  - `global/` — global store and RTK slices (store.tsx, features/*)
-  - `hoc/` — higher-order components (ErrorBoundary)
-  - `Organisms/` — larger composed UI pieces (TasksSection)
-  - `services/` — API services (authService.ts, taskService.ts)
-  - `Views/` — page views (Home, Login, Register)
-- `public/` — static assets
+### Running the Application
 
-> Note: The workspace used for the pre-training task includes additional CSS and TSX files under `src/` as listed above.
+To start the development server, run the following command:
 
-## Setup & Run (Windows PowerShell)
-
-The project uses npm/Yarn/pnpm-compatible scripts defined in `package.json`. Below are example commands for Windows PowerShell. Run them from the project root (where `package.json` is).
-
-1. Install dependencies
-
-```powershell
-# npm
-npm install
-
-# or with yarn
-yarn
-
-# or with pnpm
-pnpm install
-```
-
-2. Start dev server (Vite)
-
-```powershell
+```bash
 npm run dev
 ```
 
-3. Build for production
+The application will be available at `http://localhost:5173` (or another port if 5173 is busy).
 
-```powershell
-npm run build
+## Available Scripts
+
+-   `npm run dev`: Starts the development server.
+-   `npm run build`: Builds the application for production.
+-   `npm run lint`: Lints the codebase.
+-   `npm run format`: Formats the code using Prettier.
+-   `npm run preview`: Serves the production build locally.
+
+## Features
+
+-   User registration and login.
+-   Create, Read, Update, and Delete (CRUD) operations for tasks.
+-   A responsive and user-friendly interface.
+
 ```
-
-4. Lint the project
-
-```powershell
-npm run lint
-```
-
-5. Preview production build locally
-
-```powershell
-npm run preview
-```
-
-Troubleshooting tips
-
-- If TypeScript build fails during `npm run build`, make sure TypeScript version matches the `tsconfig` requirements and run `npx tsc -v` to check the installed tsc.
-- If ports are occupied when running `npm run dev`, set the `PORT` environment variable or close the conflicting process. Example for PowerShell:
-
-```powershell
-$env:PORT = 3001; npm run dev
-```
-
-If you'd like, I can also add a short CONTRIBUTING or DEVELOPMENT guide, or update `package.json` scripts to include a cross-platform helper like `cross-env`.
