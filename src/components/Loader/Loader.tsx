@@ -2,6 +2,7 @@ import { ProgressBar } from '@fluentui/react-components';
 import './Loader.css';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../global/store.types';
+import labels from '../../constants/labels';
 
 const Loader = ({ value }: { value: number }) => {
   const isLightTheme = useSelector(
@@ -10,7 +11,7 @@ const Loader = ({ value }: { value: number }) => {
   return (
     <div className={`loader-container ${isLightTheme ? 'light' : 'dark'}`}>
       <ProgressBar value={value} />
-      <div>Loading...</div>
+      <div>{labels.loaderText}</div>
     </div>
   );
 };

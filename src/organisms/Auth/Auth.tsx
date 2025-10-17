@@ -14,6 +14,8 @@ import { loginFormConfig, registrationFormConfig } from './Auth.config';
 import type { FieldConfig } from '../../components/Form/Form.types';
 import { useState } from 'react';
 
+import labels from '../../constants/labels';
+
 const Auth = ({
   fetchTasks,
   toggleLogin,
@@ -25,6 +27,7 @@ const Auth = ({
 }) => {
   const dispatch = useDispatch();
   const [authError, setAuthError] = useState('');
+  const { auth } = labels;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRegister = async (event: any) => {
@@ -82,7 +85,7 @@ const Auth = ({
   return (
     <div className="register-container">
       <div className="register-content">
-        <h2>{showLogin ? 'Login' : 'Register'}</h2>
+        <h2>{showLogin ? auth.login.title : auth.registration.title}</h2>
         <Form
           key={showLogin ? 'login' : 'register'}
           authError={authError}
@@ -94,9 +97,7 @@ const Auth = ({
           handleSubmit={showLogin ? handleLogin : handleRegister}
         />
         <Link onClick={() => toggleLogin()}>
-          {showLogin
-            ? 'New User? Create Account'
-            : 'Already have an account? Login'}
+          {showLogin ? auth.registration.newUser : auth.login.existingUser}
         </Link>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Checkbox, Button, Spinner } from '@fluentui/react-components';
 import { useSelector } from 'react-redux';
+import { loaderText } from '../../global/constants';
 
 import './Form.css';
 import type { FormProps } from './Form.types';
@@ -106,7 +107,7 @@ const Form: React.FC<FormProps> = ({
             {authError}
           </div>
         )}
-        {isFetching && <Spinner size="small" label="Processing..." />}
+        {isFetching && <Spinner size="small" label={loaderText} />}
       </div>
     </form>
   );

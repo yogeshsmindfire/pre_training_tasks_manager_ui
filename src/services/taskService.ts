@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { API_BASE_DOMAIN, TASK_URI } from '../constants/service';
 
 export const fetchTasks = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/tasks', {
+    const response = await axios.get(`${API_BASE_DOMAIN}${TASK_URI}`, {
       withCredentials: true,
     });
     return { status: response.status, data: response.data };
@@ -21,7 +22,7 @@ export const updateTask = async (
 ) => {
   try {
     const result = await axios.post(
-      `http://localhost:8000/api/tasks/${id}`,
+      `${API_BASE_DOMAIN}${TASK_URI}/${id}`,
       {
         title,
         description,
@@ -41,7 +42,7 @@ export const updateTask = async (
 
 export const deleteTask = async (id: string) => {
   try {
-    const result = await axios.delete(`http://localhost:8000/api/tasks/${id}`, {
+    const result = await axios.delete(`${API_BASE_DOMAIN}${TASK_URI}${id}`, {
       withCredentials: true,
     });
     return { status: result.status, data: result.data };

@@ -2,6 +2,7 @@ import Header from '../components/Header/Header';
 import { useEffect, useState } from 'react';
 
 import './Home.css';
+import labels from '../constants/labels';
 
 import {
   FluentProvider,
@@ -81,7 +82,7 @@ const Home = () => {
           <Header />
           <Divider />
           {!user.isInitialFetchDone ? (
-            <Spinner size="small" label="Loading..." />
+            <Spinner size="small" label={labels.loaderText} />
           ) : (
             <>
               <TasksSection />
@@ -97,12 +98,16 @@ const Home = () => {
                   showNotification={showNotification}
                   handleClose={() => setShowNotification(false)}
                   title={
-                    !showLogin ? 'Registeration Successful' : 'Login Successful'
+                    !showLogin
+                      ? labels.auth.registration.registrationSuccessNotification
+                          .title
+                      : labels.auth.login.loginSuccessNotification.title
                   }
                   body={
                     !showLogin
-                      ? 'You have successfully registered.'
-                      : 'You have successfully logged in.'
+                      ? labels.auth.registration.registrationSuccessNotification
+                          .body
+                      : labels.auth.login.loginSuccessNotification.body
                   }
                 />
               )}

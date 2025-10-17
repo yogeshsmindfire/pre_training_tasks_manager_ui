@@ -21,6 +21,7 @@ import {
 } from '../../global/features/tasksSlice';
 import { useDispatch } from 'react-redux';
 import type { TaskEditDialogueProps } from './TaskEditDialogue.types';
+import labels from '../../constants/labels';
 
 const TaskEditDialogue = ({
   showEditTaskDialog,
@@ -31,6 +32,7 @@ const TaskEditDialogue = ({
   const [isUpdateFailed, setIsUpdateFailed] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const dispatch = useDispatch();
+  const { taskEditDialogue } = labels;
 
   const handleSaveTask = async () => {
     setIsSaving(true);
@@ -77,9 +79,9 @@ const TaskEditDialogue = ({
     <Dialog open={showEditTaskDialog}>
       <DialogSurface>
         <DialogBody>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle>{taskEditDialogue.title}</DialogTitle>
           <DialogContent>
-            <Label htmlFor="task-title">Title</Label>
+            <Label htmlFor="task-title">{taskEditDialogue.taskTitle}</Label>
             <Input
               id="task-title"
               value={taskDetails.title}
@@ -88,7 +90,9 @@ const TaskEditDialogue = ({
               }
             />
             <span style={{ marginTop: '20px' }} />
-            <Label htmlFor="task-description">Description</Label>
+            <Label htmlFor="task-description">
+              {taskEditDialogue.taskDescription}
+            </Label>
             <Textarea
               id="task-description"
               value={taskDetails.description}
@@ -100,7 +104,7 @@ const TaskEditDialogue = ({
               }
             />
             <span style={{ marginTop: '20px' }} />
-            <Label htmlFor="task-title">Title</Label>
+            <Label htmlFor="task-title">{taskEditDialogue.dueDate}</Label>
             <Input
               id="task-title"
               type="date"
@@ -116,18 +120,18 @@ const TaskEditDialogue = ({
                 appearance="secondary"
                 onClick={() => setShowEditTaskDialog(false)}
               >
-                Close
+                {taskEditDialogue.cancel}
               </Button>
             </DialogTrigger>
             {!isSaving && (
               <Button appearance="primary" onClick={handleSaveTask}>
-                Save
+                {taskEditDialogue.save}
               </Button>
             )}
             {isSaving && <Spinner size="small" label="Saving..." />}
           </DialogActions>
           {isUpdateFailed && (
-            <span style={{ color: 'red' }}>Failed to update task</span>
+            <span style={{ color: 'red' }}>{taskEditDialogue.error}</span>
           )}
         </DialogBody>
       </DialogSurface>

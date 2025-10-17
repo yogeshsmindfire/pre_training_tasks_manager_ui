@@ -26,8 +26,10 @@ import {
   updateTasks,
 } from '../../global/features/tasksSlice';
 import type { RootState, TaskFields } from '../../global/store.types';
+import labels from '../../constants/labels';
 
 const TasksSection = () => {
+  const { taskLoadFailed, noTasks } = labels;
   const dispatch = useDispatch();
   const { tasks, isFetching, hasFetchingFailed } = useSelector(
     (state: RootState) => state.tasks
@@ -183,11 +185,7 @@ const TasksSection = () => {
       )}
       {(hasFetchingFailed || (!isFetching && tasks && !tasks.length)) && (
         <div className="no-tasks-container">
-          <span>
-            {hasFetchingFailed
-              ? 'Failed to load tasks. Please try again in sometime.'
-              : 'No tasks available. Create a new task to get started!'}
-          </span>
+          <span>{hasFetchingFailed ? taskLoadFailed : noTasks}</span>
         </div>
       )}
       {user.isLoggedIn && (

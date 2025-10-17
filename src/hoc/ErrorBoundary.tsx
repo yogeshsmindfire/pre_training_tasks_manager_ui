@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import { errorText } from '../global/constants';
 
 class ErrorBoundary extends React.Component<
   React.PropsWithChildren<any>,
@@ -21,7 +22,11 @@ class ErrorBoundary extends React.Component<
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return (
+        <div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
+          <h1>{errorText}</h1>;
+        </div>
+      );
     }
 
     return this.props.children;

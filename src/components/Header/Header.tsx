@@ -8,6 +8,7 @@ import {
   Button,
   Popover,
 } from '@fluentui/react-components';
+import labels from '../../constants/labels';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../global/features/themeSlice';
@@ -18,6 +19,7 @@ import type { RootState } from '../../global/store.types';
 
 const Header = () => {
   const dispatch = useDispatch();
+  const { header } = labels;
   const { theme, user } = useSelector((state: RootState) => state);
   const handleLogout = () => {
     logoutUser().then(() => {
@@ -32,16 +34,16 @@ const Header = () => {
       <Switch
         onClick={() => dispatch(toggleTheme())}
         checked={theme.isLightTheme ? false : true}
-        label={'Dark Theme'}
+        label={header.theme}
       ></Switch>
-      <p>Tasks Manager</p>
+      <p>{header.title}</p>
       {user.user && !user.isFetching && (
         <Popover>
           <PopoverTrigger disableButtonEnhancement>
             <Persona name={user.user.name} />
           </PopoverTrigger>
           <PopoverSurface tabIndex={-1}>
-            <Button onClick={handleLogout}>Logout</Button>
+            <Button onClick={handleLogout}>{header.logout}</Button>
           </PopoverSurface>
         </Popover>
       )}
